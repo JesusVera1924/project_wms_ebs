@@ -71,8 +71,8 @@ class LoginView extends StatelessWidget {
                             if (value == null || value.isEmpty) {
                               return 'Ingrese su contraseña';
                             }
-                            if (value.length < 6) {
-                              return 'La contraseña debe de ser de 6 caracteres';
+                            if (value.length < 4) {
+                              return 'La contraseña debe de ser de 4 caracteres';
                             }
 
                             return null; // Válido

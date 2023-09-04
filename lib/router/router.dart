@@ -19,24 +19,28 @@ class Flurorouter {
   /* GRUPO */
   // Dashboard --> tiene que pasar hacer la pantalla de la generacion de los modulos del grupo
   static String dashboardRoute = '/dashboard';
-  static String wms = '/wms';
+  static String wms = '/inventario';
 
   static String contabilidad = '/contabilidad';
-  static String seguridad = '/seguridad';
 
   /*URL MODULO SEGURIDAD */
   static String seguridadUsuario = '/seguridad/usuario';
   //MODULO DE PAGINA NO ENCONTRADA
   static String notFound = '/contabilidad/notfound/:view';
   //MODULO DE WMS RECPCION
-  static String wmsRecepcionRouter = '/wms/recepcion';
+  static String wmsRecepcionRouter = '/inventario/bodega/recepcion';
+  //--------------------
   static String wmsRecepcionChequearRouter = '/wms/recepcion/chequear';
   static String wmsRecepcionTareasRouter = '/wms/recepcion/tareas';
   static String wmsRecepcionDetalleRouter = '/wms/recepcion/detalles';
 
   //MODULO DE WMS PICKING
-  static String wmsPickingRoute = '/wms/picking';
-  static String wmsPickingRouter = '/wms/picking/view';
+  static String wmsPickingRoute = '/inventario/bodega/picking';
+  static String wmsPickingVentaRoute = '/inventario/bodega/picking/venta';
+  static String wmsPickingTransferenciaRoute =
+      '/inventario/bodega/picking/transferencia';
+  //MODULO DE WMS PACKING
+  static String wmsPackingRouter = '/inventario/bodega/packing';
 
   static void configureRoutes() {
     // Auth Routes
@@ -76,6 +80,16 @@ class Flurorouter {
         handler: DashboardHandlers.recepcionDetalle,
         transitionType: TransitionType.fadeIn);
 
+    //MODULOS DE PICKING - WMS
+    router.define(wmsPickingRoute,
+        handler: DashboardHandlers.pickingPrincipal,
+        transitionType: TransitionType.fadeIn);
+    router.define(wmsPickingTransferenciaRoute,
+        handler: DashboardHandlers.pickingVenta,
+        transitionType: TransitionType.fadeIn);
+    router.define(wmsPickingVentaRoute,
+        handler: DashboardHandlers.pickingPrincipal,
+        transitionType: TransitionType.fadeIn);
     // 404
     router.notFoundHandler = NoPageFoundHandlers.noPageFound;
   }

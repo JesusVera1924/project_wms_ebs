@@ -41,10 +41,9 @@ class CustomInputs {
       hintStyle: const TextStyle(color: Colors.grey),
     );
   }
-  static InputDecoration boxInputDecorationSinIcon({
-    required String hint,
-    required String label
-  }) {
+
+  static InputDecoration boxInputDecorationSinIcon(
+      {required String hint, required String label}) {
     return InputDecoration(
       border: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.grey.withOpacity(0.3))),
@@ -189,5 +188,29 @@ class CustomInputs {
       labelStyle: const TextStyle(color: Colors.grey),
       hintStyle: const TextStyle(color: Colors.grey),
     );
+  }
+
+  static InputDecoration dialogInputDecoration() {
+    return InputDecoration(
+        filled: true,
+        isDense: true,
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(color: Colors.blueGrey),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderSide: BorderSide(color: Colors.blueGrey),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.blue),
+        ),
+        focusedErrorBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: Color(0xFFEE376E))),
+        contentPadding: const EdgeInsets.only(top: 12, bottom: 12, left: 8),
+        labelStyle: const TextStyle(color: Colors.grey),
+        hintStyle: const TextStyle(color: Colors.grey, fontSize: 14));
   }
 }

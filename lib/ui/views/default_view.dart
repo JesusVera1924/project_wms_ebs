@@ -1,6 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:project_ebs_wms/colors/custom_colors.dart';
 import 'package:project_ebs_wms/model/http/menu_response.dart';
 import 'package:project_ebs_wms/provider/sidemenu_provider.dart';
 import 'package:project_ebs_wms/services/local_storage.dart';
@@ -56,7 +55,7 @@ class _DefaultViewState extends State<DefaultView> {
                               padding: const EdgeInsets.only(top: 50),
                               child: InkWell(
                                 onTap: () =>
-                                    NavigationService.replaceTo(item.rtxPry),
+                                    NavigationService.replaceTo(item.urlPry),
                                 child: Column(
                                   children: [
                                     Container(
@@ -76,7 +75,7 @@ class _DefaultViewState extends State<DefaultView> {
                                         child: Icon(
                                           IconData(
                                               UtilView.convertInteger(
-                                                  item.l02Pry),
+                                                  item.clxPry),
                                               fontFamily: 'MaterialIcons'),
                                           size: !Responsive.isMobile(context)
                                               ? 120
@@ -124,16 +123,10 @@ class _DefaultViewState extends State<DefaultView> {
                                                 BorderRadius.circular(20),
                                             color: UtilView.convertColor(
                                                 item.clxPry)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Icon(
-                                            IconData(
-                                                UtilView.convertInteger(
-                                                    item.l02Pry),
-                                                fontFamily: 'MaterialIcons'),
-                                            size: 120,
-                                            color: Colors.white,
-                                          ),
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Icon(Icons.block,
+                                              size: 120, color: Colors.white),
                                         ),
                                       ),
                                       Container(
@@ -209,24 +202,6 @@ class _DefaultViewState extends State<DefaultView> {
                                       height: 40,
                                       padding:
                                           EdgeInsets.only(left: 14, right: 14)),
-                                  /* icon: const Icon(
-                                      Icons.arrow_forward_ios_outlined),
-                                  iconSize: 8,
-                                  itemHeight: 40,
-                                  itemPadding: const EdgeInsets.only(
-                                      left: 14, right: 14),
-                                  dropdownMaxHeight: 200,
-                                  dropdownWidth: 200,
-                                  dropdownPadding: null,
-                                  dropdownDecoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(14),
-                                    color: CustomColors.azulCielo,
-                                  ),
-                                  dropdownElevation: 8,
-                                  scrollbarRadius: const Radius.circular(40),
-                                  scrollbarThickness: 6,
-                                  scrollbarAlwaysShow: true,
-                                  offset: const Offset(-20, 0), */
                                 ),
                               ),
                             )
@@ -256,7 +231,7 @@ class MenuItems {
         .where((element) => element.codPry.startsWith(opcion))
         .map((e) {
       return MenuItem(
-          text: e.nomPry, icon: Icons.assistant_direction, url: e.rtxPry);
+          text: e.nomPry, icon: Icons.assistant_direction, url: e.urlPry);
     }).toList();
   }
 
@@ -267,41 +242,15 @@ class MenuItems {
   static Widget buildItem(MenuItem item) {
     return Row(
       children: [
-        Icon(
-          item.icon,
-          color: Colors.white,
-          size: 18,
-        ),
-        const SizedBox(
-          width: 10,
-        ),
+        Icon(item.icon, color: Colors.white, size: 18),
+        const SizedBox(width: 10),
         Text(
           item.text,
           maxLines: 2,
           style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+              fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ],
     );
   }
-
-/*   static onChanged(BuildContext context, MenuItem item) {
-    switch (item) {
-      case MenuItems.like:
-        // logica de onPressed de cada opciones del modulo
-        break;
-      case MenuItems.share:
-        // logica de onPressed de cada opciones del modulo
-        break;
-      case MenuItems.download:
-        // logica de onPressed de cada opciones del modulo
-        break;
-      case MenuItems.cancel:
-        // logica de onPressed de cada opciones del modulo
-        break;
-    }
-  } */
 }

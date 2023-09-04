@@ -7,8 +7,10 @@ import 'package:project_ebs_wms/ui/views/dashboard_view.dart';
 import 'package:project_ebs_wms/ui/views/default_view.dart';
 import 'package:project_ebs_wms/ui/views/login_view.dart';
 import 'package:project_ebs_wms/ui/views/no_page_found_p_view.dart';
-import 'package:project_ebs_wms/ui/views/recepcion_chequear_view.dart';
-import 'package:project_ebs_wms/ui/views/recepcion_view.dart';
+import 'package:project_ebs_wms/ui/views/picking/picking_venta_view.dart';
+import 'package:project_ebs_wms/ui/views/picking/picking_view.dart';
+import 'package:project_ebs_wms/ui/views/recepcion/recepcion_chequear_view.dart';
+import 'package:project_ebs_wms/ui/views/recepcion/recepcion_view.dart';
 import 'package:provider/provider.dart';
 
 class DashboardHandlers {
@@ -97,6 +99,33 @@ class DashboardHandlers {
 
     if (authProvider.authStatus == AuthStatus.authenticated) {
       return const RecepcionView();
+    } else {
+      return const LoginView();
+    }
+  });
+
+  //-----------------------------------------PICKING---------------------------------------------------------
+  static Handler pickingPrincipal = Handler(handlerFunc: (context, params) {
+    final authProvider = Provider.of<AuthProvider>(context!);
+
+    Provider.of<SideMenuProvider>(context, listen: false).setCurrentPageUrl(
+        Flurorouter.wmsPickingRoute, "Picking vista principal".toUpperCase());
+
+    if (authProvider.authStatus == AuthStatus.authenticated) {
+      return const PickingView();
+    } else {
+      return const LoginView();
+    }
+  });
+
+  static Handler pickingVenta = Handler(handlerFunc: (context, params) {
+    final authProvider = Provider.of<AuthProvider>(context!);
+
+    Provider.of<SideMenuProvider>(context, listen: false).setCurrentPageUrl(
+        Flurorouter.wmsPickingRoute, "Picking Venta".toUpperCase());
+
+    if (authProvider.authStatus == AuthStatus.authenticated) {
+      return const PickingVentaView();
     } else {
       return const LoginView();
     }

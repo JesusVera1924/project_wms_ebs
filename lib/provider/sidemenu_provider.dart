@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_ebs_wms/api/solicitud_api.dart';
 import 'package:project_ebs_wms/model/http/menu_response.dart';
+import 'package:project_ebs_wms/model/usuario.dart';
 import 'package:project_ebs_wms/services/local_storage.dart';
 
 class SideMenuProvider extends ChangeNotifier {
@@ -59,16 +60,20 @@ class SideMenuProvider extends ChangeNotifier {
   initList() async {
     codEmp = LocalStorage.prefs.getString('emp');
 
-    final usuario = LocalStorage.prefs.getString('dni');
+    final usuario = Usuario.fromJson(LocalStorage.prefs.getString('usuario')!);
     final token = LocalStorage.prefs.getString('token');
+    //consulta de opciones del menu
+    final listResponse =
+        await api.getMenuUser(codEmp!, usuario.codUsr, token!, "W");
 
-    final listResponse = await api.getMenuUser(codEmp!, usuario!.trim(), token);
+    if (listResponse != null) {
+      menuList =
+          listResponse.where((element) => element.clsPry == "G").toList();
+      menusubList =
+          listResponse.where((element) => element.clsPry == "M").toList();
 
-    menuList = listResponse.where((element) => element.clsPry == "G").toList();
-    menusubList =
-        listResponse.where((element) => element.clsPry == "M").toList();
-
-    item = listResponse.where((element) => element.clsPry == "I").toList();
+      item = listResponse.where((element) => element.clsPry == "I").toList();
+    }
 
     notifyListeners();
   }

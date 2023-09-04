@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_ebs_wms/provider/auth_provider.dart';
+import 'package:project_ebs_wms/provider/picking_provider.dart';
 import 'package:project_ebs_wms/provider/sidemenu_provider.dart';
 import 'package:project_ebs_wms/router/router.dart';
 import 'package:project_ebs_wms/services/local_storage.dart';
@@ -9,7 +10,6 @@ import 'package:project_ebs_wms/ui/layouts/auth/auth_layout.dart';
 import 'package:project_ebs_wms/ui/layouts/dashboard/dashboard_layout.dart';
 import 'package:project_ebs_wms/ui/layouts/splash/splash_layout.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 
 void main() async {
   await LocalStorage.configurePrefs();
@@ -25,7 +25,8 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(lazy: false, create: (_) => AuthProvider()),
-        ChangeNotifierProvider(lazy: false, create: (_) => SideMenuProvider())
+        ChangeNotifierProvider(lazy: false, create: (_) => SideMenuProvider()),
+        ChangeNotifierProvider(lazy: false, create: (_) => PickingProvider())
       ],
       child: const MyApp(),
     );

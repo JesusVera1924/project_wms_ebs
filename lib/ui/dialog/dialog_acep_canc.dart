@@ -13,17 +13,12 @@ Future<bool> dialogAcepCanc(BuildContext context, String title, Widget body,
               borderRadius: BorderRadius.all(Radius.circular(20.0))),
           title: Row(
             children: [
-              Icon(
-                iconData,
-                color: color,
-                size: 24,
-              ),
+              Icon(iconData, color: color, size: 24),
               Padding(
                 padding: const EdgeInsets.only(left: 5),
-                child: Text(
-                  title,
-                  style: TextStyle(color:color,fontWeight: FontWeight.bold),
-                ),
+                child: Text(title,
+                    style:
+                        TextStyle(color: color, fontWeight: FontWeight.bold)),
               ),
             ],
           ),
@@ -43,7 +38,6 @@ Future<bool> dialogAcepCanc(BuildContext context, String title, Widget body,
                   Navigator.of(context).pop();
                 },
                 child: const Text('Aceptar', style: TextStyle(fontSize: 14))),
-
             TextButton(
                 style: ButtonStyle(backgroundColor:
                     MaterialStateProperty.resolveWith<Color>(

@@ -57,9 +57,9 @@ class _SidebarState extends State<Sidebar> {
             MenuItems(
               text: item.nomPry,
               icon: Icons.compass_calibration_outlined,
-              onPressed: () => navigateTo(item.rtxPry, module: item.codPry),
+              onPressed: () => navigateTo(item.urlPry, module: item.codPry),
               isActive: SideMenuProvider.enableItems
-                  ? sideMenuProvider.currentPage == item.rtxPry
+                  ? sideMenuProvider.currentPage == item.urlPry
                   : false,
             ),
           ],

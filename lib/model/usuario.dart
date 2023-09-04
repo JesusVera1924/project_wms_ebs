@@ -5,10 +5,22 @@
 import 'dart:convert';
 
 class Usuario {
+  String codEmp;
+  String codUsr;
+  String nomUsr;
+  String clvUsr;
+  String ctaUsr;
+  String nicUsr;
+  String corUsr;
+  String celUsr;
+  String rolUsr;
+  String clsUsr;
+  DateTime fexUsr;
+  String stsUsr;
+
   Usuario({
-    required this.codUsr,
     required this.codEmp,
-    required this.codPry,
+    required this.codUsr,
     required this.nomUsr,
     required this.clvUsr,
     required this.ctaUsr,
@@ -21,54 +33,37 @@ class Usuario {
     required this.stsUsr,
   });
 
-  String codUsr;
-  String codEmp;
-  String codPry;
-  String nomUsr;
-  String clvUsr;
-  String ctaUsr;
-  String nicUsr;
-  String corUsr;
-  String celUsr;
-  String rolUsr;
-  String clsUsr;
-  DateTime fexUsr;
-  String stsUsr;
-
   factory Usuario.fromJson(String str) => Usuario.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
   factory Usuario.fromMap(Map<String, dynamic> json) => Usuario(
-        codUsr: json["cod_usr"],
-        codEmp: json["cod_emp"],
-        codPry: json["cod_pry"],
-        nomUsr: json["nom_usr"],
-        clvUsr: json["clv_usr"],
-        ctaUsr: json["cta_usr"],
-        nicUsr: json["nic_usr"],
-        corUsr: json["cor_usr"],
-        celUsr: json["cel_usr"],
-        rolUsr: json["rol_usr"],
-        clsUsr: json["cls_usr"],
-        fexUsr: DateTime.parse(json["fex_usr"]),
-        stsUsr: json["sts_usr"],
+        codEmp: json["codEmp"],
+        codUsr: json["codUsr"],
+        nomUsr: json["nomUsr"],
+        clvUsr: json["clvUsr"],
+        ctaUsr: json["ctaUsr"],
+        nicUsr: json["nicUsr"],
+        corUsr: json["corUsr"],
+        celUsr: json["celUsr"],
+        rolUsr: json["rolUsr"],
+        clsUsr: json["clsUsr"],
+        fexUsr: DateTime.parse(json["fexUsr"]),
+        stsUsr: json["stsUsr"],
       );
 
   Map<String, dynamic> toMap() => {
-        "cod_usr": codUsr,
-        "cod_emp": codEmp,
-        "cod_pry": codPry,
-        "nom_usr": nomUsr,
-        "clv_usr": clvUsr,
-        "cta_usr": ctaUsr,
-        "nic_usr": nicUsr,
-        "cor_usr": corUsr,
-        "cel_usr": celUsr,
-        "rol_usr": rolUsr,
-        "cls_usr": clsUsr,
-        "fex_usr":
-            "${fexUsr.year.toString().padLeft(4, '0')}-${fexUsr.month.toString().padLeft(2, '0')}-${fexUsr.day.toString().padLeft(2, '0')}",
-        "sts_usr": stsUsr,
+        "codEmp": codEmp,
+        "codUsr": codUsr,
+        "nomUsr": nomUsr,
+        "clvUsr": clvUsr,
+        "ctaUsr": ctaUsr,
+        "nicUsr": nicUsr,
+        "corUsr": corUsr,
+        "celUsr": celUsr,
+        "rolUsr": rolUsr,
+        "clsUsr": clsUsr,
+        "fexUsr": fexUsr.toIso8601String(),
+        "stsUsr": stsUsr,
       };
 }

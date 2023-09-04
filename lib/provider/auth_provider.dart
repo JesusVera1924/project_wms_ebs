@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:project_ebs_wms/model/http/auth_response.dart';
+import 'package:project_ebs_wms/model/empresas.dart';
 import 'package:project_ebs_wms/provider/sidemenu_provider.dart';
 import 'package:project_ebs_wms/router/router.dart';
 import 'package:project_ebs_wms/services/local_storage.dart';
@@ -19,15 +17,14 @@ class AuthProvider extends ChangeNotifier {
     isAuthenticated();
   }
 
-  Future<List<Empresa>> login(String email, String password) async {
+  Future<List<Empresas>> login(String email, String password) async {
     /* List<Empresa> lista */
-    final authResponse = await _api.getFindUser(email, password);
+    final authResponse = await _api.accessLogin(email, password);
     if (authResponse != null) {
       authStatus = AuthStatus.authenticated;
       LocalStorage.prefs.setString('token', authResponse.token);
-      LocalStorage.prefs.setString('dni', authResponse.usuario.codUsr);
-      //json.encode(authResponse.empresa)
-      return authResponse.empresa;
+      LocalStorage.prefs.setString('usuario', authResponse.usuario.toJson());
+      return authResponse.empresas;
     } else {
       NotificationsService.showSnackbarError('Usuario / Password no válidos');
       return [];
@@ -78,21 +75,6 @@ class AuthProvider extends ChangeNotifier {
     }
 
     notifyListeners();
-  }
-
-  Future<void> empresas() async {
-    /*
-    LocalStorage.prefs.setString('empresas',
-          json.encode(utf8.encode(authResponse.empresa.toString())));
-     final parseo = jsonDecode(respuesta);
-    final parseo = jsonDecode(respuesta);
-    return parseo
-        .map<PedidoExteriorResponse>(
-            (json) => PedidoExteriorResponse.fromMap(json))
-        .toList();
-     */
-
-    return;
   }
 
   refresh() {
