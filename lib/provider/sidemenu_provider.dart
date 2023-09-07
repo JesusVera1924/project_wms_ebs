@@ -79,6 +79,6 @@ class SideMenuProvider extends ChangeNotifier {
   }
 
   updateModel() {
-    final idModulo = LocalStorage.prefs.getString('idModule');
+    //final idModulo = LocalStorage.prefs.getString('idModule');
   }
 }

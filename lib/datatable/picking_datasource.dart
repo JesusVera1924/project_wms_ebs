@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
+import 'package:project_ebs_wms/colors/custom_colors.dart';
 import 'package:project_ebs_wms/model/ig0040.dart';
 import 'package:project_ebs_wms/provider/picking_provider.dart';
 import 'package:project_ebs_wms/ui/dialog/dialog_acep_canc.dart';
@@ -34,6 +35,9 @@ class PickingDTS extends DataGridSource {
         DataGridCell<String>(columnName: '6-destino', value: team.dstCop),
         DataGridCell<String>(columnName: '7-items', value: "${team.cn1Mov}"),
         DataGridCell<Ig0040Y>(columnName: '8-objeto', value: team),
+        DataGridCell<String>(
+            columnName: '10-user',
+            value: team.usrIbs == "" || team.usrIbs == null ? "" : team.usrIbs),
       ]);
     }).toList();
   }
@@ -43,7 +47,16 @@ class PickingDTS extends DataGridSource {
 
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(cells: _buildDataGridForDts(row));
+    Color getRowBackgroundColor() {
+      if (row.getCells()[8].value.toString().trim() != "") {
+        return CustomColors.customLinecolors;
+      }
+
+      return Colors.transparent;
+    }
+
+    return DataGridRowAdapter(
+        color: getRowBackgroundColor(), cells: _buildDataGridForDts(row));
   }
 
   List<Widget> _buildDataGridForDts(DataGridRow row) {
@@ -109,6 +122,12 @@ class PickingDTS extends DataGridSource {
                       fontSize: 15, fontWeight: FontWeight.bold)),
             ],
           )),
+      Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: Text(row.getCells()[8].value.toString().trim(),
+              style:
+                  const TextStyle(fontSize: 13, fontWeight: FontWeight.bold))),
       Container(
           padding: const EdgeInsets.all(8.0),
           alignment: Alignment.centerLeft,

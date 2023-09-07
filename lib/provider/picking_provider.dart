@@ -34,7 +34,7 @@ class PickingProvider extends ChangeNotifier {
   ];
 
   Future initzializar() async {
-    var respuesta = await api.getIg0040yPend("01", "01", "", "P");
+    var respuesta = await api.getIg0040yPend("01", "01", "SYS1", "P", "02");
     if (respuesta != null) {
       listPendient = respuesta;
       notifyListeners();

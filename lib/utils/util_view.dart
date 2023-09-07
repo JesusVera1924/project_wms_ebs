@@ -21,14 +21,8 @@ class UtilView {
     } catch (e) {
       var split1 = cadena!.split(' ');
 
-      cadena = split1[0]
-              .split('/')
-              .reversed
-              .toString()
-              .replaceAll(RegExp(r'[(-)]'), '')
-              .replaceAll(', ', '-') +
-          ' ' +
-          split1[1];
+      cadena =
+          '${split1[0].split('/').reversed.toString().replaceAll(RegExp(r'[(-)]'), '').replaceAll(', ', '-')} ${split1[1]}';
     }
     return cadena.replaceAll('T', ' ');
   }
@@ -72,43 +66,43 @@ class UtilView {
         (dateFin.month - dateInicio.month == value);
   }
 
-  static messageDanger(String _message) {
+  static messageDanger(String message) {
     Fluttertoast.showToast(
-      msg: _message,
+      msg: message,
       toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 4,
       backgroundColor: Colors.red,
       textColor: Colors.white,
-      fontSize: 17.0,
+      fontSize: 12,
       webPosition: "center",
       webBgColor: "red",
     );
   }
 
-  static messageAccess(String _message) {
+  static messageAccess(String message) {
     Fluttertoast.showToast(
-      msg: _message,
+      msg: message,
       toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 2,
-      backgroundColor: Colors.red,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 3,
+      backgroundColor: Colors.lightBlue,
       textColor: Colors.white,
-      fontSize: 17.0,
+      fontSize: 12,
       webPosition: "center",
       webBgColor: 'rgb(46,64,83)',
     );
   }
 
-  static messageWarning(String _message) {
+  static messageWarning(String message) {
     Fluttertoast.showToast(
-      msg: _message,
+      msg: message,
       toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 3,
-      backgroundColor: Colors.red,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 4,
+      backgroundColor: Colors.yellowAccent,
       textColor: Colors.white,
-      fontSize: 17.0,
+      fontSize: 12,
       webPosition: "center",
       webBgColor: "orange",
     );

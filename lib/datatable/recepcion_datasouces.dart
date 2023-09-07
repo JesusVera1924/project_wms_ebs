@@ -97,11 +97,11 @@ class RecepcionDataSource extends DataGridSource {
                 child: Icon(Icons.playlist_add_check, color: Colors.blueGrey)),
           ),
           const SizedBox(width: 5),
-          Tooltip(
+          const Tooltip(
               message: "Generar Tareas",
               child: Icon(Icons.task, color: Colors.blueGrey)),
           const SizedBox(width: 5),
-          Tooltip(
+          const Tooltip(
               message: "Detalle",
               child: Icon(Icons.remove_red_eye, color: Colors.blueGrey)),
           const SizedBox(width: 5),

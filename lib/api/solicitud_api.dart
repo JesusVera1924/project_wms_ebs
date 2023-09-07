@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:project_ebs_wms/model/http/auth_response.dart';
 import 'package:project_ebs_wms/model/http/menu_response.dart';
 import 'package:project_ebs_wms/model/ig0040.dart';
+import 'package:project_ebs_wms/model/ig0201.dart';
 import 'package:project_ebs_wms/model/karmov.dart';
 import 'package:project_ebs_wms/model/repuesta.dart';
 
@@ -19,7 +20,7 @@ class SolicitudApi {
       if (respuesta.statusCode == 200) {
         final dao = Respuesta.fromJson(utf8.decode(respuesta.bodyBytes));
         if (dao.code == 200) {
-          print(dao.data.toString());
+          //print(dao.data.toString());
           return AuthResponse.fromMap(dao.data);
         }
       } else {
@@ -37,7 +38,7 @@ class SolicitudApi {
     var url = Uri.parse(
         "$baseUrl/auth/permisos?cod_emp=$emp&cod_user=$usuario&ambiente=$ambiente");
 
-    print(url.toString());
+    //print(url.toString());
 
     try {
       http.Response respuesta = await http.get(url);
@@ -59,13 +60,72 @@ class SolicitudApi {
   }
   //#endregion
 
-//#Enlace lista de pendiente
-  Future<List<Ig0040Y>?> getIg0040yPend(
-      String codEmp, String codPto, String user, String tipo) async {
+  //#Enlace lista de pedidos
+  Future<List<Ig0201>?> getIg0201Pend(
+      String codEmp, String codPto, String bodega) async {
     var url = Uri.parse(
-        "$baseUrl/bodega/getAllPedPend?codEmp=$codEmp&codPto=$codPto&user=$user&tipo=$tipo&codBod=02");
+        "$baseUrl/ig0201/getAllEmbarques?cod_emp=$codEmp&cod_pto=$codPto&cod_bod=$bodega");
 
     print(url.toString());
+
+    try {
+      http.Response respuesta = await http.get(url);
+
+      if (respuesta.statusCode == 200) {
+        final dao = Respuesta.fromJson(utf8.decode(respuesta.bodyBytes));
+        if (dao.code == 200) {
+          return dao.data.map<Ig0201>((json) => Ig0201.fromMap(json)).toList();
+        }
+      } else {
+        throw Exception(respuesta.statusCode.toString());
+      }
+    } catch (e) {
+      throw ('$e');
+    }
+    return null;
+  }
+  //#endregion
+
+  //#GENERAR KARMOV PARA EL EMBARQUE Y COMIENZO DEL PROCESO DE RECEPCION
+  Future<String> generarEmbarque(List<Ig0201> datos) async {
+    var url = Uri.parse("$baseUrl/bodega/CreateShipment");
+    String resp = "";
+    List<Map> bod = [];
+    for (var element in datos) {
+      bod.add(element.toMap());
+    }
+    var objetoJson = json.encode(bod);
+    //----
+    //print(url.toString());
+    //print(objetoJson);
+
+    try {
+      http.Response respuesta = await http.post(url,
+          body: objetoJson,
+          headers: {"Content-type": "application/json;charset=UTF-8"});
+
+      if (respuesta.statusCode == 200) {
+        final dao = Respuesta.fromJson(utf8.decode(respuesta.bodyBytes));
+        if (dao.code == 200 || dao.code == 204) {
+          resp = dao.msg;
+        }
+      } else {
+        throw Exception(respuesta.statusCode.toString());
+      }
+    } catch (e) {
+      throw ('$e');
+    }
+    return resp;
+  }
+  //#endregion
+
+//#Enlace lista de pendiente
+  Future<List<Ig0040Y>?> getIg0040yPend(String codEmp, String codPto,
+      String user, String tipo, String bodega) async {
+    var url = Uri.parse(
+        "$baseUrl/bodega/getAllPedPend?codEmp=$codEmp&codPto=$codPto&user=$user&tipo=$tipo&codBod=$bodega");
+
+    //print(url.toString());
 
     try {
       http.Response respuesta = await http.get(url);
@@ -93,7 +153,7 @@ class SolicitudApi {
     var url = Uri.parse(
         "$baseUrl/karmov/getAll?cod_emp=$codEmp&cod_pto=$codPto&cod_mov=$codMov&num_mov=$numMov&fec_mov=$fecMov");
 
-    print(url.toString());
+    //print(url.toString());
 
     try {
       http.Response respuesta = await http.get(url);
@@ -119,8 +179,8 @@ class SolicitudApi {
     var objetoJson = datos.toJson();
     var resp = "";
     //----
-    print(url.toString());
-    print(objetoJson);
+    //print(url.toString());
+    //print(objetoJson);
 
     try {
       http.Response respuesta = await http.post(url,

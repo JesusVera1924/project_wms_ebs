@@ -223,7 +223,22 @@ class _PickingVentaViewState extends State<PickingVentaView> {
                             padding: const EdgeInsets.all(8.0),
                             //width: Responsive.isDesktop(context) ? 100 : 80,
                             alignment: Alignment.center,
-                            child: const Text('ESTADOS',
+                            child: const Text('EST',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
+                        GridColumn(
+                          columnName: '10-user',
+                          columnWidthMode: ColumnWidthMode.fitByColumnName,
+                          allowFiltering: false,
+                          label: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            //width: Responsive.isDesktop(context) ? 100 : 80,
+                            alignment: Alignment.center,
+                            child: const Text('USER',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),

@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:project_ebs_wms/colors/custom_colors.dart';
-import 'package:project_ebs_wms/datatable/recepcion_datasouces.dart';
-import 'package:project_ebs_wms/model/http/karmov_response.dart';
-import 'package:project_ebs_wms/ui/labels/custom_labels.dart';
+import 'package:project_ebs_wms/datatable/ig0201_datasource.dart';
+import 'package:project_ebs_wms/provider/embarque_provider.dart';
 import 'package:project_ebs_wms/utils/response.dart';
+import 'package:project_ebs_wms/utils/util_view.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:project_ebs_wms/ui/cards/black_card.dart';
 import 'package:project_ebs_wms/ui/shared/navbar.dart';
 
-class RecepcionChequearView extends StatelessWidget {
-  const RecepcionChequearView({Key? key}) : super(key: key);
+class EmbarqueView extends StatefulWidget {
+  const EmbarqueView({Key? key}) : super(key: key);
+
+  @override
+  State<EmbarqueView> createState() => _EmbarqueViewState();
+}
+
+class _EmbarqueViewState extends State<EmbarqueView> {
+  String mensaje = "";
+
+  @override
+  void initState() {
+    Provider.of<EmbarqueProvider>(context, listen: false).initzializar();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<EmbarqueProvider>(context);
     final keyTable = GlobalKey<SfDataGridState>();
+    final dataGridController = DataGridController();
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -29,23 +45,18 @@ class RecepcionChequearView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   decoration: const BoxDecoration(shape: BoxShape.circle),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      UtilView.buildShowDialog(context);
+                      mensaje = await provider.saveInitEmbarque();
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pop();
+                      UtilView.messageAccess(mensaje);
+                      dataGridController.selectedRow = null;
+                    },
                     child: const Tooltip(
-                      message: "Nuevo",
-                      child: Icon(Icons.assignment,
-                          size: 22, color: Colors.blueGrey),
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  decoration: const BoxDecoration(shape: BoxShape.circle),
-                  child: InkWell(
-                    onTap: () async {},
-                    child: const Tooltip(
-                      message: "Buscar",
+                      message: "Generar RecepciÓn",
                       child:
-                          Icon(Icons.search, size: 22, color: Colors.blueGrey),
+                          Icon(Icons.upload, size: 22, color: Colors.blueGrey),
                     ),
                   ),
                 ),
@@ -68,59 +79,6 @@ class RecepcionChequearView extends StatelessWidget {
               child: Wrap(
             crossAxisAlignment: WrapCrossAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Text('Detalle de embarque: CI - PV010',
-                    style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.bold)),
-              ),
-              Row(
-                children: [
-                  Container(
-                      margin:
-                          const EdgeInsets.only(top: 8, bottom: 8, right: 8),
-                      padding:
-                          const EdgeInsets.only(top: 8, bottom: 8, right: 8),
-                      child: Text('GRUPO:', style: CustomLabels.h3)),
-                  Container(
-                      margin: const EdgeInsets.all(8),
-                      padding: const EdgeInsets.all(8),
-                      color: Colors.grey[300],
-                      child: const Text("central de taizon de lugar de mismom"))
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                      margin:
-                          const EdgeInsets.only(top: 8, bottom: 8, right: 8),
-                      padding:
-                          const EdgeInsets.only(top: 8, bottom: 8, right: 8),
-                      child: Text('MARCA:', style: CustomLabels.h3)),
-                  Container(
-                      margin: const EdgeInsets.all(8),
-                      padding: const EdgeInsets.all(8),
-                      color: Colors.grey[300],
-                      child: const Text("central de taizon de lugar de mismom"))
-                ],
-              ),
-              Row(
-                children: [
-                  Container(
-                      margin:
-                          const EdgeInsets.only(top: 8, bottom: 8, right: 8),
-                      padding:
-                          const EdgeInsets.only(top: 8, bottom: 8, right: 8),
-                      child: Text('ALTERNO:', style: CustomLabels.h3)),
-                  Container(
-                      margin: const EdgeInsets.all(8),
-                      padding: const EdgeInsets.all(8),
-                      color: Colors.grey[300],
-                      child: const Text("central de taizon de lugar de mismom"))
-                ],
-              ),
               SizedBox(
                 width: double.infinity,
                 height: 700,
@@ -132,29 +90,22 @@ class RecepcionChequearView extends StatelessWidget {
                       rowHeight: 40,
                       //columnWidthMode: ColumnWidthMode.none,
                       headerRowHeight: 40,
-                      source: RecepcionDataSource([
-                        KarmovResponse(
-                            codEmp: "01",
-                            codPto: "01",
-                            numMov: "000000001",
-                            codMov: "CI",
-                            codRef: "1763",
-                            nomRef: "Jesus alberto vera",
-                            fecMov: DateTime.now(),
-                            lin: 20,
-                            rev: 15,
-                            pro: (15 * 100) / 20,
-                            estado: 1)
-                      ], context),
+                      showCheckboxColumn: true,
+                      selectionMode: SelectionMode.multiple,
+                      controller: dataGridController,
+                      onSelectionChanged: (addedRows, removedRows) {
+                        provider.selectItem(addedRows, removedRows);
+                      },
+                      source: Ig0201DTS(context, provider),
                       columns: [
                         GridColumn(
-                          columnName: 'punto',
+                          columnName: '1-numero',
                           columnWidthMode: ColumnWidthMode.fitByColumnName,
                           label: Container(
                             padding: const EdgeInsets.all(8.0),
                             //width: Responsive.isDesktop(context) ? 100 : 80,
-                            alignment: Alignment.center,
-                            child: const Text('PUNTO',
+                            alignment: Alignment.centerLeft,
+                            child: const Text('NUMERO',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -162,13 +113,13 @@ class RecepcionChequearView extends StatelessWidget {
                           ),
                         ),
                         GridColumn(
-                          columnName: 'numero',
+                          columnName: '2-fecha',
                           columnWidthMode: ColumnWidthMode.fitByCellValue,
                           label: Container(
                             padding: const EdgeInsets.all(8.0),
                             //width: Responsive.isDesktop(context) ? 150 : 90,
-                            alignment: Alignment.center,
-                            child: const Text('MOVIMIENTO',
+                            alignment: Alignment.centerLeft,
+                            child: const Text('FECHA.I',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -176,26 +127,12 @@ class RecepcionChequearView extends StatelessWidget {
                           ),
                         ),
                         GridColumn(
-                          columnName: 'movimiento',
-                          columnWidthMode: ColumnWidthMode.fitByColumnName,
+                          columnName: '3-proveedor',
+                          columnWidthMode: ColumnWidthMode.fill,
                           label: Container(
                             padding: const EdgeInsets.all(8.0),
                             //width: Responsive.isDesktop(context) ? 150 : 90,
                             alignment: Alignment.center,
-                            child: const Text('TIPO.M',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                overflow: TextOverflow.ellipsis),
-                          ),
-                        ),
-                        GridColumn(
-                          columnName: 'proveedor',
-                          columnWidthMode: ColumnWidthMode.fill,
-                          //width: Responsive.isDesktop(context) ? 320 : 90,
-                          label: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            alignment: Alignment.centerLeft,
                             child: const Text('PROVEEDOR',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -204,13 +141,13 @@ class RecepcionChequearView extends StatelessWidget {
                           ),
                         ),
                         GridColumn(
-                          columnName: 'fechaIngreso',
-                          columnWidthMode: ColumnWidthMode.none,
+                          columnName: '4-tipo',
+                          columnWidthMode: ColumnWidthMode.fitByColumnName,
+                          //width: Responsive.isDesktop(context) ? 320 : 90,
                           label: Container(
                             padding: const EdgeInsets.all(8.0),
-                            //width: Responsive.isDesktop(context) ? 100 : 80,
-                            alignment: Alignment.center,
-                            child: const Text('F.INGRESO',
+                            alignment: Alignment.centerLeft,
+                            child: const Text('TIPO',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -218,13 +155,13 @@ class RecepcionChequearView extends StatelessWidget {
                           ),
                         ),
                         GridColumn(
-                          columnName: 'lin',
-                          columnWidthMode: ColumnWidthMode.none,
+                          columnName: '5-cub',
+                          columnWidthMode: ColumnWidthMode.fitByColumnName,
+                          //width: Responsive.isDesktop(context) ? 320 : 90,
                           label: Container(
                             padding: const EdgeInsets.all(8.0),
-                            //width: Responsive.isDesktop(context) ? 100 : 80,
-                            alignment: Alignment.center,
-                            child: const Text('LIN',
+                            alignment: Alignment.centerLeft,
+                            child: const Text('CUB',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -232,13 +169,55 @@ class RecepcionChequearView extends StatelessWidget {
                           ),
                         ),
                         GridColumn(
-                          columnName: 'rev',
+                          columnName: '6-pso',
+                          columnWidthMode: ColumnWidthMode.fitByColumnName,
+                          //width: Responsive.isDesktop(context) ? 320 : 90,
+                          label: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            alignment: Alignment.centerLeft,
+                            child: const Text('PESO',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
+                        GridColumn(
+                          columnName: '7-marca',
+                          columnWidthMode: ColumnWidthMode.fill,
+                          label: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            //width: Responsive.isDesktop(context) ? 100 : 80,
+                            alignment: Alignment.centerLeft,
+                            child: const Text('MARCA',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
+                        GridColumn(
+                          columnName: '8-info',
+                          columnWidthMode: ColumnWidthMode.fill,
+                          label: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            //width: Responsive.isDesktop(context) ? 100 : 80,
+                            alignment: Alignment.centerLeft,
+                            child: const Text('INFO',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                                overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
+                        GridColumn(
+                          columnName: '9-zarpar',
                           columnWidthMode: ColumnWidthMode.fitByCellValue,
                           label: Container(
                             padding: const EdgeInsets.all(8.0),
-                            //width: Responsive.isDesktop(context) ? 100 : 80,
+                            //width: Responsive.isDesktop(context) ? 150 : 90,
                             alignment: Alignment.center,
-                            child: const Text('REV',
+                            child: const Text('F.ZARPE',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -246,27 +225,13 @@ class RecepcionChequearView extends StatelessWidget {
                           ),
                         ),
                         GridColumn(
-                          columnName: 'proceso',
-                          //columnWidthMode: ColumnWidthMode.fitByCellValue,
-                          width: Responsive.isDesktop(context) ? 150 : 100,
+                          columnName: '10-arribo',
+                          columnWidthMode: ColumnWidthMode.fitByCellValue,
                           label: Container(
                             padding: const EdgeInsets.all(8.0),
+                            //width: Responsive.isDesktop(context) ? 150 : 90,
                             alignment: Alignment.center,
-                            child: const Text('PROGRESO',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                                overflow: TextOverflow.ellipsis),
-                          ),
-                        ),
-                        GridColumn(
-                          columnName: 'acciones',
-                          //columnWidthMode: ColumnWidthMode.fitByCellValue,
-                          width: Responsive.isDesktop(context) ? 180 : 100,
-                          label: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            alignment: Alignment.center,
-                            child: const Text('ACCIONES',
+                            child: const Text('F.ARRIBO',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),

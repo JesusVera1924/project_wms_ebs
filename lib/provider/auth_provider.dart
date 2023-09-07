@@ -68,6 +68,8 @@ class AuthProvider extends ChangeNotifier {
   loadingParams(String codEmp) async {
     final token = LocalStorage.prefs.getString('token');
     try {
+      //verificar token
+      //token
       NavigationService.replaceTo(Flurorouter.dashboardRoute);
     } catch (e) {
       NavigationService.replaceTo("/contabilidad/notfound/$e");

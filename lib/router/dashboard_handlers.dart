@@ -9,6 +9,7 @@ import 'package:project_ebs_wms/ui/views/login_view.dart';
 import 'package:project_ebs_wms/ui/views/no_page_found_p_view.dart';
 import 'package:project_ebs_wms/ui/views/picking/picking_venta_view.dart';
 import 'package:project_ebs_wms/ui/views/picking/picking_view.dart';
+import 'package:project_ebs_wms/ui/views/recepcion/embarque_view.dart';
 import 'package:project_ebs_wms/ui/views/recepcion/recepcion_chequear_view.dart';
 import 'package:project_ebs_wms/ui/views/recepcion/recepcion_view.dart';
 import 'package:provider/provider.dart';
@@ -52,6 +53,20 @@ class DashboardHandlers {
     }
   });
 //-----------------------------------------RECEPCION---------------------------------------------------------
+  static Handler embarquePrincipal = Handler(handlerFunc: (context, params) {
+    final authProvider = Provider.of<AuthProvider>(context!);
+
+    Provider.of<SideMenuProvider>(context, listen: false).setCurrentPageUrl(
+        Flurorouter.wmsRecepcionRouter,
+        "Embarque vista principal".toUpperCase());
+
+    if (authProvider.authStatus == AuthStatus.authenticated) {
+      return const EmbarqueView();
+    } else {
+      return const LoginView();
+    }
+  });
+
   static Handler recepcionPrincipal = Handler(handlerFunc: (context, params) {
     final authProvider = Provider.of<AuthProvider>(context!);
 

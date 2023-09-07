@@ -28,6 +28,7 @@ class Flurorouter {
   //MODULO DE PAGINA NO ENCONTRADA
   static String notFound = '/contabilidad/notfound/:view';
   //MODULO DE WMS RECPCION
+  static String wmsEmbarqueRouter = '/inventario/bodega/embarque';
   static String wmsRecepcionRouter = '/inventario/bodega/recepcion';
   //--------------------
   static String wmsRecepcionChequearRouter = '/wms/recepcion/chequear';
@@ -67,6 +68,9 @@ class Flurorouter {
         handler: DashboardHandlers.wmsEbs,
         transitionType: TransitionType.fadeIn);
     //MODULOS DE RECEPCION - WMS
+    router.define(wmsEmbarqueRouter,
+        handler: DashboardHandlers.embarquePrincipal,
+        transitionType: TransitionType.fadeIn);
     router.define(wmsRecepcionRouter,
         handler: DashboardHandlers.recepcionPrincipal,
         transitionType: TransitionType.fadeIn);

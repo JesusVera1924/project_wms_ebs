@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_ebs_wms/colors/custom_colors.dart';
 import 'package:project_ebs_wms/ui/cards/black_card.dart';
 import 'package:project_ebs_wms/ui/shared/navbar.dart';
-import 'package:project_ebs_wms/utils/response.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class PickingTransView extends StatefulWidget {
   const PickingTransView({Key? key}) : super(key: key);
@@ -16,7 +12,7 @@ class PickingTransView extends StatefulWidget {
 class _PickingTransViewState extends State<PickingTransView> {
   @override
   Widget build(BuildContext context) {
-    final keyTable = GlobalKey<SfDataGridState>();
+    //final keyTable = GlobalKey<SfDataGridState>();
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -225,7 +221,7 @@ class _PickingTransViewState extends State<PickingTransView> {
                       ]),
                 ), */
                 child: Container(
-                  child: Text('PONER TABLA AQUI'),
+                  child: const Text('PONER TABLA AQUI'),
                 ),
               )
             ],

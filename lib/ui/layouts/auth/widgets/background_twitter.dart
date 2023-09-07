@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class BackgroundTwitter extends StatelessWidget {
+  const BackgroundTwitter({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: buildBoxDecoration(),
       child: Container(
-        constraints: const BoxConstraints( maxWidth: 400 ),
+        constraints: const BoxConstraints(maxWidth: 400),
         child: const Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
@@ -22,12 +23,8 @@ class BackgroundTwitter extends StatelessWidget {
   }
 
   BoxDecoration buildBoxDecoration() {
-    return BoxDecoration(
+    return const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('twitter-bg.png'),
-          fit: BoxFit.cover
-        )
-    );
+            image: AssetImage('twitter-bg.png'), fit: BoxFit.cover));
   }
 }
-
